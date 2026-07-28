@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "purradox:block/wormhole_test_block"
+    }
+  }
+}

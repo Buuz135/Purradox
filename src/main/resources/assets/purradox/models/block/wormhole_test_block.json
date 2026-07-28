@@ -1,0 +1,52 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": true,
+  "textures": {
+    "base": "minecraft:block/deepslate_tiles",
+    "metal": "minecraft:block/exposed_cut_copper",
+    "top": "minecraft:block/polished_blackstone",
+    "particle": "minecraft:block/deepslate_tiles"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down": {"texture": "#base", "cullface": "down"},
+        "up": {"texture": "#top", "cullface": "up"},
+        "north": {"texture": "#base", "cullface": "north"},
+        "south": {"texture": "#base", "cullface": "south"},
+        "west": {"texture": "#base", "cullface": "west"},
+        "east": {"texture": "#base", "cullface": "east"}
+      }
+    },
+    {
+      "from": [0, 3, -0.01],
+      "to": [16, 6, 0.01],
+      "faces": {
+        "north": {"texture": "#metal"}
+      }
+    },
+    {
+      "from": [0, 3, 15.99],
+      "to": [16, 6, 16.01],
+      "faces": {
+        "south": {"texture": "#metal"}
+      }
+    },
+    {
+      "from": [-0.01, 3, 0],
+      "to": [0.01, 6, 16],
+      "faces": {
+        "west": {"texture": "#metal"}
+      }
+    },
+    {
+      "from": [15.99, 3, 0],
+      "to": [16.01, 6, 16],
+      "faces": {
+        "east": {"texture": "#metal"}
+      }
+    }
+  ]
+}
