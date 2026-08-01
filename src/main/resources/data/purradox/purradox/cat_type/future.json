@@ -1,0 +1,46 @@
+{
+  "translation_key": "cat_type.purradox.future",
+  "texture": "default",
+  "food": "#minecraft:cat_food",
+  "production": {
+    "interval": {
+      "min_ticks": 1200,
+      "max_ticks": 2400
+    },
+    "conditions": {
+      "requires_tamed": true,
+      "requires_adult": true,
+      "requires_on_ground": true
+    },
+    "outputs": [
+      {
+        "stack": {
+          "id": "minecraft:amethyst_shard",
+          "count": 2
+        },
+        "weight": 8
+      },
+      {
+        "stack": {
+          "id": "minecraft:echo_shard",
+          "count": 1
+        },
+        "weight": 1
+      },
+      {
+        "stack": {
+          "id": "minecraft:ender_pearl",
+          "count": 1
+        },
+        "weight": 3
+      },
+      {
+        "stack": {
+          "id": "minecraft:prismarine_shard",
+          "count": 2
+        },
+        "weight": 6
+      }
+    ]
+  }
+}

@@ -16,23 +16,23 @@ public final class WormholeRenderTypes {
     private static final Identifier SHADER = id("core/wormhole");
 
     public static final RenderPipeline WORMHOLE_PIPELINE = RenderPipeline.builder(
-            RenderPipelines.MATRICES_FOG_SNIPPET,
-            RenderPipelines.GLOBALS_SNIPPET
-        )
-        .withLocation(id("pipeline/wormhole"))
-        .withVertexShader(SHADER)
-        .withFragmentShader(SHADER)
-        .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
-        .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
-        .withDepthStencilState(DepthStencilState.DEFAULT)
-        .withCull(false)
-        .build();
+                    RenderPipelines.MATRICES_FOG_SNIPPET,
+                    RenderPipelines.GLOBALS_SNIPPET
+            )
+            .withLocation(id("pipeline/wormhole"))
+            .withVertexShader(SHADER)
+            .withFragmentShader(SHADER)
+            .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
+            .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
+            .withDepthStencilState(DepthStencilState.DEFAULT)
+            .withCull(false)
+            .build();
 
     public static final RenderType WORMHOLE = RenderType.create(
-        "purradox_wormhole",
-        RenderSetup.builder(WORMHOLE_PIPELINE)
-            .sortOnUpload()
-            .createRenderSetup()
+            "purradox_wormhole",
+            RenderSetup.builder(WORMHOLE_PIPELINE)
+                    .sortOnUpload()
+                    .createRenderSetup()
     );
 
     private WormholeRenderTypes() {

@@ -34,14 +34,14 @@ public final class StrugglingCatModel extends AdultCatModel {
         float reachingLegAngle = -0.95F + Mth.sin(time * 0.8F) * 0.1F;
         float pawTension = Mth.sin(time * 1.35F) * 0.008F * grip;
         this.leftFrontLeg.xRot = Mth.lerp(
-            grip,
-            Mth.lerp(freeStruggle, this.leftFrontLeg.xRot, reachingLegAngle),
-            plantedLegAngle + pawTension
+                grip,
+                Mth.lerp(freeStruggle, this.leftFrontLeg.xRot, reachingLegAngle),
+                plantedLegAngle + pawTension
         );
         this.rightFrontLeg.xRot = Mth.lerp(
-            grip,
-            Mth.lerp(freeStruggle, this.rightFrontLeg.xRot, reachingLegAngle),
-            plantedLegAngle + pawTension
+                grip,
+                Mth.lerp(freeStruggle, this.rightFrontLeg.xRot, reachingLegAngle),
+                plantedLegAngle + pawTension
         );
         this.leftFrontLeg.zRot -= (0.13F * freeStruggle) + (0.48F * grip);
         this.rightFrontLeg.zRot += (0.13F * freeStruggle) + (0.48F * grip);

@@ -1,0 +1,46 @@
+{
+  "translation_key": "cat_type.purradox.ancient_river",
+  "texture": "default",
+  "food": "#minecraft:cat_food",
+  "production": {
+    "interval": {
+      "min_ticks": 1200,
+      "max_ticks": 2400
+    },
+    "conditions": {
+      "requires_tamed": true,
+      "requires_adult": true,
+      "requires_on_ground": true
+    },
+    "outputs": [
+      {
+        "stack": {
+          "id": "minecraft:clay_ball",
+          "count": 3
+        },
+        "weight": 10
+      },
+      {
+        "stack": {
+          "id": "minecraft:paper",
+          "count": 2
+        },
+        "weight": 7
+      },
+      {
+        "stack": {
+          "id": "minecraft:lapis_lazuli",
+          "count": 2
+        },
+        "weight": 4
+      },
+      {
+        "stack": {
+          "id": "minecraft:gold_ingot",
+          "count": 1
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "translation_key": "cat_type.purradox.tabby",
+  "texture": "default",
+  "food": "#minecraft:cat_food",
+  "stats": {
+    "max_health": 10.0,
+    "movement_speed": 0.3,
+    "attack_damage": 3.0,
+    "scale": 1.0
+  },
+  "taming_chance": 0.33333334,
+  "production": {
+    "interval": {
+      "min_ticks": 2400,
+      "max_ticks": 4800
+    },
+    "conditions": {
+      "requires_tamed": true,
+      "requires_adult": true
+    },
+    "outputs": [
+      {
+        "stack": {
+          "id": "minecraft:string",
+          "count": 1
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

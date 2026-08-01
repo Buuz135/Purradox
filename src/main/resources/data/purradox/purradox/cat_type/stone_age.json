@@ -1,0 +1,39 @@
+{
+  "translation_key": "cat_type.purradox.stone_age",
+  "texture": "default",
+  "food": "#minecraft:cat_food",
+  "production": {
+    "interval": {
+      "min_ticks": 1200,
+      "max_ticks": 2400
+    },
+    "conditions": {
+      "requires_tamed": true,
+      "requires_adult": true,
+      "requires_on_ground": true
+    },
+    "outputs": [
+      {
+        "stack": {
+          "id": "minecraft:stone",
+          "count": 3
+        },
+        "weight": 10
+      },
+      {
+        "stack": {
+          "id": "minecraft:bone",
+          "count": 2
+        },
+        "weight": 4
+      },
+      {
+        "stack": {
+          "id": "minecraft:leather",
+          "count": 1
+        },
+        "weight": 2
+      }
+    ]
+  }
+}

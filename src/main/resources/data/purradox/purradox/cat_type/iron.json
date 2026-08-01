@@ -1,0 +1,80 @@
+{
+  "translation_key": "cat_type.purradox.iron",
+  "texture": "minecraft:textures/entity/cat/cat_all_black.png",
+  "food": [
+    "minecraft:cod",
+    "minecraft:salmon"
+  ],
+  "stats": {
+    "max_health": 16.0,
+    "movement_speed": 0.26,
+    "attack_damage": 5.0,
+    "scale": 1.1
+  },
+  "taming_chance": 0.2,
+  "attachments": [
+    {
+      "model": "minecraft:iron_ingot",
+      "anchor": "body",
+      "visible_when": "adult",
+      "transform": {
+        "translation": {
+          "y": -0.12,
+          "z": 0.05
+        },
+        "rotation": {
+          "x": 90.0
+        },
+        "scale": {
+          "x": 0.45,
+          "y": 0.45,
+          "z": 0.45
+        }
+      }
+    }
+  ],
+  "production": {
+    "interval": {
+      "min_ticks": 1200,
+      "max_ticks": 2400
+    },
+    "rolls": 1,
+    "conditions": {
+      "requires_tamed": true,
+      "requires_adult": true,
+      "requires_sitting": false,
+      "requires_on_ground": true,
+      "dimensions": [
+        "minecraft:overworld"
+      ]
+    },
+    "outputs": [
+      {
+        "stack": {
+          "id": "minecraft:iron_nugget",
+          "count": 2
+        },
+        "weight": 9
+      },
+      {
+        "stack": {
+          "id": "minecraft:iron_ingot",
+          "count": 1
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "breeding": {
+    "offspring": [
+      {
+        "type": "purradox:iron",
+        "weight": 3
+      },
+      {
+        "type": "purradox:tabby",
+        "weight": 1
+      }
+    ]
+  }
+}

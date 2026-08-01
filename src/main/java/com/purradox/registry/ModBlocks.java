@@ -10,13 +10,13 @@ public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Purradox.MOD_ID);
 
     public static final DeferredBlock<WormholeTestBlock> WORMHOLE_TEST_BLOCK = BLOCKS.registerBlock(
-        "wormhole_test_block",
-        WormholeTestBlock::new,
-        properties -> properties
-            .strength(4.0F, 8.0F)
-            .requiresCorrectToolForDrops()
-            .sound(SoundType.METAL)
-            .lightLevel(state -> 11)
+            "wormhole_test_block",
+            WormholeTestBlock::new,
+            properties -> properties
+                    .strength(4.0F, 8.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> 11)
     );
 
     private ModBlocks() {

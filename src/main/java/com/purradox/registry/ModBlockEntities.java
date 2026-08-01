@@ -9,13 +9,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
-        DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Purradox.MOD_ID);
+            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Purradox.MOD_ID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WormholeBlockEntity>> WORMHOLE =
-        BLOCK_ENTITY_TYPES.register(
-            "wormhole",
-            () -> new BlockEntityType<>(WormholeBlockEntity::new, ModBlocks.WORMHOLE_TEST_BLOCK.get())
-        );
+            BLOCK_ENTITY_TYPES.register(
+                    "wormhole",
+                    () -> new BlockEntityType<>(WormholeBlockEntity::new, ModBlocks.WORMHOLE_TEST_BLOCK.get())
+            );
 
     private ModBlockEntities() {
     }

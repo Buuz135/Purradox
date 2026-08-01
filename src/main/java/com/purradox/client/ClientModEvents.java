@@ -1,9 +1,11 @@
 package com.purradox.client;
 
 import com.purradox.Purradox;
+import com.purradox.client.renderer.ResourcefulCatRenderer;
 import com.purradox.client.renderer.WormholeBlockEntityRenderer;
 import com.purradox.client.renderer.WormholeRenderTypes;
 import com.purradox.registry.ModBlockEntities;
+import com.purradox.registry.ModEntities;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -23,5 +25,6 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.WORMHOLE.get(), WormholeBlockEntityRenderer::new);
+        event.registerEntityRenderer(ModEntities.CAT.get(), ResourcefulCatRenderer::new);
     }
 }

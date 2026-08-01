@@ -1,4 +1,18 @@
 {
   "modmenu.descriptionTranslation.purradox": "A NeoForge mod for Minecraft 26.1.",
-  "block.purradox.wormhole_test_block": "Temporal Wormhole Test Block"
+  "block.purradox.wormhole_test_block": "Temporal Wormhole Test Block",
+  "entity.purradox.cat": "Purradox Cat",
+  "item.purradox.cat_spawn_egg": "Purradox Cat Spawn Egg",
+  "item.purradox.cat_spawn_egg.named": "%s Spawn Egg",
+  "cat_type.purradox.tabby": "Resourceful Tabby",
+  "cat_type.purradox.iron": "Iron Cat",
+  "cat_type.purradox.stone_age": "Stone Age Cat",
+  "cat_type.purradox.ancient_river": "Ancient River Cat",
+  "cat_type.purradox.classical": "Classical Cat",
+  "cat_type.purradox.viking": "Viking Cat",
+  "cat_type.purradox.medieval": "Medieval Cat",
+  "cat_type.purradox.renaissance": "Renaissance Cat",
+  "cat_type.purradox.industrial": "Industrial Cat",
+  "cat_type.purradox.modern": "Modern Cat",
+  "cat_type.purradox.future": "Future Cat"
 }

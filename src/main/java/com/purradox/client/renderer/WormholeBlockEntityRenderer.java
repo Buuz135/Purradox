@@ -8,20 +8,20 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public final class WormholeBlockEntityRenderer
-    implements BlockEntityRenderer<WormholeBlockEntity, WormholeRenderState> {
+        implements BlockEntityRenderer<WormholeBlockEntity, WormholeRenderState> {
 
     private static final float CYCLE_TICKS = 220.0F;
     private static final Identifier CAT_TEXTURE =
-        Identifier.withDefaultNamespace("textures/entity/cat/cat_red.png");
+            Identifier.withDefaultNamespace("textures/entity/cat/cat_red.png");
 
     private final StrugglingCatModel catModel;
 
@@ -36,17 +36,17 @@ public final class WormholeBlockEntityRenderer
 
     @Override
     public void extractRenderState(
-        WormholeBlockEntity blockEntity,
-        WormholeRenderState state,
-        float partialTicks,
-        Vec3 cameraPosition,
-        ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress
+            WormholeBlockEntity blockEntity,
+            WormholeRenderState state,
+            float partialTicks,
+            Vec3 cameraPosition,
+            ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress
     ) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 
         float gameTime = blockEntity.getLevel() == null
-            ? partialTicks
-            : blockEntity.getLevel().getGameTime() + partialTicks;
+                ? partialTicks
+                : blockEntity.getLevel().getGameTime() + partialTicks;
         float blockOffset = Math.floorMod(blockEntity.getBlockPos().hashCode(), (int) CYCLE_TICKS);
         float phase = Mth.frac((gameTime + blockOffset) / CYCLE_TICKS);
 
@@ -66,10 +66,10 @@ public final class WormholeBlockEntityRenderer
 
     @Override
     public void submit(
-        WormholeRenderState state,
-        PoseStack poseStack,
-        SubmitNodeCollector submitNodeCollector,
-        CameraRenderState camera
+            WormholeRenderState state,
+            PoseStack poseStack,
+            SubmitNodeCollector submitNodeCollector,
+            CameraRenderState camera
     ) {
         poseStack.pushPose();
         poseStack.translate(0.0F, 1.003F, 0.0F);
@@ -88,36 +88,36 @@ public final class WormholeBlockEntityRenderer
 
     private void submitCat(WormholeRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         float heave = Mth.sin(state.cat.ageInTicks * 0.72F)
-            * 0.035F
-            * state.struggle
-            * (1.0F - state.cat.grip);
+                * 0.035F
+                * state.struggle
+                * (1.0F - state.cat.grip);
         float victoryBounce = state.emergence > 0.96F
-            ? Mth.abs(Mth.sin(state.cat.ageInTicks * 0.45F)) * 0.035F
-            : 0.0F;
+                ? Mth.abs(Mth.sin(state.cat.ageInTicks * 0.45F)) * 0.035F
+                : 0.0F;
 
         poseStack.pushPose();
         poseStack.translate(
-            0.5F,
-            verticalRootY(state.emergence) + heave + victoryBounce + 0.15f,
-            0.85F
+                0.5F,
+                verticalRootY(state.emergence) + heave + victoryBounce + 0.15f,
+                0.85F
         );
         poseStack.mulPose(Axis.XP.rotationDegrees(-78.0F));
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(
-            Mth.sin(state.cat.ageInTicks * 0.67F) * (3.0F + state.cat.push * 4.0F) * state.struggle
+                Mth.sin(state.cat.ageInTicks * 0.67F) * (3.0F + state.cat.push * 4.0F) * state.struggle
         ));
         poseStack.scale(-0.9F, -0.9F, 0.9F);
         poseStack.translate(0.0F, -1.501F, 0.0F);
 
         submitNodeCollector.submitModel(
-            this.catModel,
-            state.cat,
-            poseStack,
-            CAT_TEXTURE,
-            state.lightCoords,
-            OverlayTexture.NO_OVERLAY,
-            0,
-            state.breakProgress
+                this.catModel,
+                state.cat,
+                poseStack,
+                CAT_TEXTURE,
+                state.lightCoords,
+                OverlayTexture.NO_OVERLAY,
+                0,
+                state.breakProgress
         );
         poseStack.popPose();
     }
