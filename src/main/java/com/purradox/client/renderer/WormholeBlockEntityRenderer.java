@@ -69,15 +69,15 @@ public final class WormholeBlockEntityRenderer
             WormholeRenderState state,
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
-            CameraRenderState camera
+        CameraRenderState camera
     ) {
         poseStack.pushPose();
-        poseStack.translate(0.0F, 1.003F, 0.0F);
+        poseStack.translate(0.0F, 1.0F, 0.5F);
         submitNodeCollector.submitCustomGeometry(poseStack, WormholeRenderTypes.WORMHOLE, (pose, buffer) -> {
-            buffer.addVertex(pose, 0.03F, 0.0F, 0.03F).setUv(0.0F, 0.0F);
-            buffer.addVertex(pose, 0.03F, 0.0F, 0.97F).setUv(0.0F, 1.0F);
-            buffer.addVertex(pose, 0.97F, 0.0F, 0.97F).setUv(1.0F, 1.0F);
-            buffer.addVertex(pose, 0.97F, 0.0F, 0.03F).setUv(1.0F, 0.0F);
+            buffer.addVertex(pose, 0.03F, 0.03F, 0.0F).setUv(0.0F, 0.0F);
+            buffer.addVertex(pose, 0.03F, 0.97F, 0.0F).setUv(0.0F, 1.0F);
+            buffer.addVertex(pose, 0.97F, 0.97F, 0.0F).setUv(1.0F, 1.0F);
+            buffer.addVertex(pose, 0.97F, 0.03F, 0.0F).setUv(1.0F, 0.0F);
         });
         poseStack.popPose();
 

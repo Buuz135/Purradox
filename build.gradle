@@ -22,6 +22,18 @@ sourceSets.main.resources {
 }
 
 repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'BlameJared'
+                url = 'https://maven.blamejared.com'
+            }
+        }
+        filter {
+            includeGroup 'com.hrznstudio'
+            includeGroup 'mezz.jei'
+        }
+    }
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -51,7 +63,7 @@ configurations {
 }
 
 dependencies {
-
+    implementation "com.hrznstudio:titanium:${titanium_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -63,6 +75,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            titanium_version       : titanium_version,
+            titanium_version_range : titanium_version_range,
     ]
 
     inputs.properties replaceProperties
