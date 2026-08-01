@@ -98,10 +98,10 @@ public final class WormholeBlockEntityRenderer
         poseStack.pushPose();
         poseStack.translate(
                 0.5F,
-                verticalRootY(state.emergence) + heave + victoryBounce + 0.15f,
-                0.85F
+                1.15F,
+                0.5F + portalRootDepth(state.emergence) + heave + victoryBounce
         );
-        poseStack.mulPose(Axis.XP.rotationDegrees(-78.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(12.0F));
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(
                 Mth.sin(state.cat.ageInTicks * 0.67F) * (3.0F + state.cat.push * 4.0F) * state.struggle
@@ -122,7 +122,7 @@ public final class WormholeBlockEntityRenderer
         poseStack.popPose();
     }
 
-    private static float verticalRootY(float emergence) {
+    private static float portalRootDepth(float emergence) {
         if (emergence <= 0.6F) {
             return 0.05F + emergence * 1.2F;
         }
@@ -174,6 +174,6 @@ public final class WormholeBlockEntityRenderer
 
     @Override
     public AABB getRenderBoundingBox(WormholeBlockEntity blockEntity) {
-        return new AABB(blockEntity.getBlockPos()).expandTowards(0.0, 1.5, 0.0);
+        return new AABB(blockEntity.getBlockPos()).expandTowards(0.0, 1.5, 1.5);
     }
 }

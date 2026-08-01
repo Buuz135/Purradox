@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "base": "minecraft:block/red_wool",
+    "cushion": "minecraft:block/magenta_wool",
+    "particle": "minecraft:block/red_wool"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [15, 2, 15],
+      "faces": {
+        "down": {"texture": "#base"},
+        "up": {"texture": "#base"},
+        "north": {"texture": "#base"},
+        "south": {"texture": "#base"},
+        "west": {"texture": "#base"},
+        "east": {"texture": "#base"}
+      }
+    },
+    {
+      "from": [2, 2, 2],
+      "to": [14, 5, 14],
+      "faces": {
+        "down": {"texture": "#cushion"},
+        "up": {"texture": "#cushion"},
+        "north": {"texture": "#cushion"},
+        "south": {"texture": "#cushion"},
+        "west": {"texture": "#cushion"},
+        "east": {"texture": "#cushion"}
+      }
+    }
+  ]
+}

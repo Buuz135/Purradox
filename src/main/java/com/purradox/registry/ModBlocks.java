@@ -1,6 +1,7 @@
 package com.purradox.registry;
 
 import com.purradox.Purradox;
+import com.purradox.world.level.block.CatSeatBlock;
 import com.purradox.world.level.block.WormholeTestBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -17,6 +18,15 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL)
                     .lightLevel(state -> 11)
+    );
+
+    public static final DeferredBlock<CatSeatBlock> CAT_SEAT = BLOCKS.registerBlock(
+            "cat_seat",
+            CatSeatBlock::new,
+            properties -> properties
+                    .strength(0.8F)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()
     );
 
     private ModBlocks() {

@@ -3,6 +3,9 @@ package com.purradox.world.entity;
 import com.purradox.cat.CatType;
 import com.purradox.cat.CatTypeRegistry;
 import com.purradox.registry.ModEntities;
+import com.purradox.world.item.CatTeaserWandItem;
+import com.purradox.world.level.block.entity.CatSeatBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,11 +37,13 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.EnumSet;
 import java.util.Optional;
 
 public final class ResourcefulCat extends Cat {
     private static final String CAT_TYPE_TAG = "CatType";
     private static final String PRODUCTION_TIME_TAG = "ProductionTime";
+    private static final String ASSIGNED_SEAT_TAG = "AssignedSeat";
     private static final EntityDataAccessor<String> DATA_CAT_TYPE = SynchedEntityData.defineId(
             ResourcefulCat.class,
             EntityDataSerializers.STRING
@@ -45,6 +51,7 @@ public final class ResourcefulCat extends Cat {
 
     private int productionTime = -1;
     private CatType.@Nullable Stats appliedStats;
+    private @Nullable BlockPos assignedSeat;
 
     public ResourcefulCat(EntityType<? extends Cat> type, Level level) {
         super(type, level);
@@ -53,6 +60,7 @@ public final class ResourcefulCat extends Cat {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(2, new AssignedSeatGoal(this));
         this.goalSelector.addGoal(3, new TemptGoal(this, 0.6, this::isFood, true));
     }
 
@@ -93,6 +101,9 @@ public final class ResourcefulCat extends Cat {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof CatTeaserWandItem wand) {
+            return wand.interactLivingEntity(stack, player, this, hand);
+        }
         if (!this.isTame() && this.isFood(stack)) {
             if (!this.level().isClientSide()) {
                 this.usePlayerItem(player, hand, stack);
@@ -116,9 +127,51 @@ public final class ResourcefulCat extends Cat {
     public void tick() {
         super.tick();
         if (this.level() instanceof ServerLevel serverLevel && this.isAlive()) {
+            this.validateSeatAssignment(serverLevel);
             this.refreshConfiguredAttributes();
             this.tickProduction(serverLevel);
         }
+    }
+
+    public void assignSeat(BlockPos seatPos) {
+        if (this.assignedSeat != null && !this.assignedSeat.equals(seatPos)
+                && this.level().getBlockEntity(this.assignedSeat) instanceof CatSeatBlockEntity oldSeat) {
+            oldSeat.clearIfAssigned(this.getUUID());
+        }
+        this.assignedSeat = seatPos.immutable();
+        this.setOrderedToSit(false);
+        this.setInSittingPose(false);
+        this.getNavigation().stop();
+        this.setPersistenceRequired();
+    }
+
+    public boolean isAssignedToSeat(BlockPos seatPos) {
+        return seatPos.equals(this.assignedSeat);
+    }
+
+    public void clearSeat(BlockPos seatPos) {
+        if (seatPos.equals(this.assignedSeat)) {
+            this.clearSeatLocally();
+        }
+    }
+
+    private void validateSeatAssignment(ServerLevel level) {
+        if (this.assignedSeat != null && level.hasChunkAt(this.assignedSeat) && !this.hasValidAssignedSeat()) {
+            this.clearSeatLocally();
+        }
+    }
+
+    private boolean hasValidAssignedSeat() {
+        return this.assignedSeat != null
+                && this.level().getBlockEntity(this.assignedSeat) instanceof CatSeatBlockEntity seat
+                && seat.isAssignedTo(this.getUUID());
+    }
+
+    private void clearSeatLocally() {
+        this.assignedSeat = null;
+        this.setOrderedToSit(false);
+        this.setInSittingPose(false);
+        this.getNavigation().stop();
     }
 
     private void refreshConfiguredAttributes() {
@@ -240,6 +293,9 @@ public final class ResourcefulCat extends Cat {
         super.addAdditionalSaveData(output);
         output.putString(CAT_TYPE_TAG, this.getCatTypeKey().identifier().toString());
         output.putInt(PRODUCTION_TIME_TAG, this.productionTime);
+        if (this.assignedSeat != null) {
+            output.putLong(ASSIGNED_SEAT_TAG, this.assignedSeat.asLong());
+        }
     }
 
     @Override
@@ -248,6 +304,8 @@ public final class ResourcefulCat extends Cat {
         Identifier id = Identifier.tryParse(input.getStringOr(CAT_TYPE_TAG, CatTypeRegistry.DEFAULT.identifier().toString()));
         this.entityData.set(DATA_CAT_TYPE, (id == null ? CatTypeRegistry.DEFAULT.identifier() : id).toString());
         this.productionTime = input.getIntOr(PRODUCTION_TIME_TAG, -1);
+        long seatPos = input.getLongOr(ASSIGNED_SEAT_TAG, Long.MIN_VALUE);
+        this.assignedSeat = seatPos == Long.MIN_VALUE ? null : BlockPos.of(seatPos);
         this.applyConfiguredAttributes(false);
     }
 
@@ -283,6 +341,83 @@ public final class ResourcefulCat extends Cat {
         AttributeInstance instance = this.getAttribute(attribute);
         if (instance != null) {
             instance.setBaseValue(value);
+        }
+    }
+
+    private static final class AssignedSeatGoal extends Goal {
+        private static final double ARRIVAL_DISTANCE_SQUARED = 0.25;
+        private static final double SEAT_HEIGHT = 5.0 / 16.0;
+        private final ResourcefulCat cat;
+
+        private AssignedSeatGoal(ResourcefulCat cat) {
+            this.cat = cat;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.cat.hasValidAssignedSeat();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.canUse();
+        }
+
+        @Override
+        public void start() {
+            this.cat.setOrderedToSit(false);
+            this.cat.setInSittingPose(false);
+            this.moveToSeat();
+        }
+
+        @Override
+        public void stop() {
+            this.cat.setInSittingPose(false);
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            BlockPos seatPos = this.cat.assignedSeat;
+            if (seatPos == null) {
+                return;
+            }
+            double targetX = seatPos.getX() + 0.5;
+            double targetZ = seatPos.getZ() + 0.5;
+            double deltaX = this.cat.getX() - targetX;
+            double deltaZ = this.cat.getZ() - targetZ;
+            if (deltaX * deltaX + deltaZ * deltaZ <= ARRIVAL_DISTANCE_SQUARED
+                    && Math.abs(this.cat.getY() - seatPos.getY()) < 1.5) {
+                this.cat.getNavigation().stop();
+                this.cat.setPos(targetX, seatPos.getY() + SEAT_HEIGHT, targetZ);
+                this.cat.setDeltaMovement(0.0, 0.0, 0.0);
+                this.cat.setYRot(180.0F);
+                this.cat.setYBodyRot(180.0F);
+                this.cat.setYHeadRot(180.0F);
+                this.cat.setInSittingPose(true);
+            } else {
+                this.cat.setInSittingPose(false);
+                if (this.cat.tickCount % 20 == 0 || this.cat.getNavigation().isDone()) {
+                    this.moveToSeat();
+                }
+            }
+        }
+
+        private void moveToSeat() {
+            BlockPos seatPos = this.cat.assignedSeat;
+            if (seatPos != null) {
+                this.cat.getNavigation().moveTo(
+                        seatPos.getX() + 0.5,
+                        seatPos.getY() + 1.0,
+                        seatPos.getZ() + 0.5,
+                        1.1
+                );
+            }
         }
     }
 }
