@@ -1,8 +1,7 @@
 # Purradox
 
 Purradox cat types are data driven. One `purradox:cat` entity can become any
-cat declared by a datapack, much like Resourceful Bees uses definitions instead
-of one registered entity for every bee.
+cat declared by a datapack.
 
 ## Adding a cat type
 
@@ -119,17 +118,6 @@ The Spawn Eggs creative tab automatically contains one named egg for every cat
 type in the current datapacks. Adding a cat definition therefore also adds its
 spawn egg variant without registering another item.
 
-Use entity data to summon or give a particular type directly:
-
-```mcfunction
-summon purradox:cat ~ ~ ~ {CatType:"purradox:iron"}
-give @s purradox:cat_spawn_egg[minecraft:entity_data={id:"purradox:cat",CatType:"purradox:iron"}]
-```
-
-The mod includes `purradox:tabby`, `purradox:iron`, `purradox:stone_age`,
-`purradox:ancient_river`, `purradox:classical`, `purradox:viking`,
-`purradox:medieval`, `purradox:renaissance`, `purradox:industrial`,
-`purradox:modern`, and `purradox:future` as working definitions.
 
 ## Validation and behavior
 
